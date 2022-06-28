@@ -1,12 +1,14 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+//structure for binary tree
 typedef struct binary_tree {
     int value;
     struct binary_tree *left;
     struct binary_tree *right;
 } binary_tree;
 
+//create root node from value
 binary_tree * create_binary_tree(int value) {
     binary_tree *t = (binary_tree *)malloc(sizeof(binary_tree));
     t->value = value;
@@ -15,6 +17,7 @@ binary_tree * create_binary_tree(int value) {
     return t;
 }
 
+//add value to left of element of binary tree
 binary_tree * add_left(binary_tree * t, int value) {
     if(t->left == NULL) {
         t->left = (binary_tree *)malloc(sizeof(binary_tree));
@@ -25,6 +28,7 @@ binary_tree * add_left(binary_tree * t, int value) {
     return t->left;
 }
 
+//add value to right of element of binary tree
 binary_tree * add_right(binary_tree * t, int value) {
     if(t->right == NULL) {
         t->right = (binary_tree *)malloc(sizeof(binary_tree));
@@ -35,6 +39,7 @@ binary_tree * add_right(binary_tree * t, int value) {
     return t->right;
 }
 
+//traverse and free binary tree, recursive
 void free_binary_tree(binary_tree *t) {
     if(t != NULL) {
         free_binary_tree(t->left);
@@ -109,14 +114,24 @@ int * load_array_from_file(char *path) {
 int main(int argc, char *argv[]) {
     int i;
     binary_tree *t;
-    int *array = load_array_from_file("binarytree.txt");
+    char *path;
+    if(argc != 2) {
+        printf("Please supply path\n");
+
+    }
+    else {
+        path = argv[1];
+    }
+    int *array = load_array_from_file(path);
 
     //print array read from argv
+    printf("Data in file %s, excluding first int which is number of elements in file \n", path);
     for(i=1; i<array[0]+1; i++) {
         printf(" %d ", array[i]);
     }
     printf("\n");
     //print binary tree generated from array, in order - should be values sorted from smallest to largest
+    printf("Put data in binary tree, read in order\n");
     t = populate_tree(array[0], &array[1]);
     print_inorder(t);
     printf("\n");
